@@ -1,149 +1,267 @@
 <!DOCTYPE html>
-<html lang="vi">
-
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reyansh</title>
-    <link rel="shortcut icon" href="./icon.png" type="image/x-icon">
-    <link rel="stylesheet" href="main.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Happy 3rd Birthday Reyansh 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1/dist/confetti.browser.min.js"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Dancing Script',cursive;
+  height:100vh;overflow:hidden;
+  background:radial-gradient(circle at bottom,#0b0033,#000);
+  color:#fff;
+}
+
+/* Galaxy & Aurora */
+.starry-bg::before{
+  content:"";position:fixed;inset:0;
+  background:url('https://cdn.pixabay.com/photo/2018/04/23/18/30/galaxy-3344209_1280.jpg') center/cover no-repeat;
+  opacity:0.85;animation:twinkle 10s ease-in-out infinite alternate;
+}
+@keyframes twinkle{0%{opacity:0.6}100%{opacity:0.9}}
+.aurora{
+  position:fixed;inset:0;
+  background:radial-gradient(circle at 20% 30%,rgba(0,255,255,0.15),transparent 60%),
+             radial-gradient(circle at 80% 70%,rgba(255,105,180,0.15),transparent 60%);
+  filter:blur(60px);
+  animation:auroraMove 20s ease-in-out infinite alternate;
+}
+@keyframes auroraMove{0%{transform:translate(0,0)}100%{transform:translate(40px,-40px)}}
+
+/* Magical stickers */
+.sticker{
+  position:fixed;
+  font-size:2.2rem;
+  opacity:0;
+  transform:translate(-50%,-50%) scale(0.5);
+  animation:popSticker 6s ease-in-out forwards;
+  pointer-events:none;
+  text-shadow:0 0 10px rgba(255,255,255,0.6);
+}
+@keyframes popSticker{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(0.5);}
+  10%{opacity:1;transform:translate(-50%,-50%) scale(1.1);}
+  70%{opacity:1;transform:translate(-50%,-50%) scale(1);}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(0.6);}
+}
+
+/* Welcome */
+#welcome{
+  position:fixed;inset:0;z-index:999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(8px);
+  transition:opacity 2s ease;
+}
+#welcome h1{
+  font-size:2.5rem;text-align:center;
+  text-shadow:0 0 25px #ff69b4,0 0 40px #00c3ff;
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+#welcome button{
+  margin-top:1.5rem;padding:14px 30px;font-size:1.2rem;
+  border:none;border-radius:50px;
+  background:linear-gradient(45deg,#ff69b4,#00c3ff);
+  color:#fff;cursor:pointer;
+  box-shadow:0 0 20px rgba(255,255,255,.4);
+}
+
+/* Scene + carousel */
+.scene{position:fixed;inset:0;perspective:1200px;opacity:0;transition:opacity 2s ease;}
+.scene.active{opacity:1}
+.carousel-bg{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:550px;height:550px;border-radius:50%;
+  background:conic-gradient(from 0deg,#ff69b4,#00c3ff,#ffcc00,#ff69b4);
+  filter:blur(100px) brightness(1.3);opacity:.3;
+  animation:rotateGlow 20s linear infinite;
+}
+@keyframes rotateGlow{to{transform:translate(-50%,-50%) rotate(360deg)}}
+#carousel{
+  position:absolute;top:50%;left:50%;
+  transform-style:preserve-3d;
+  transform:translate(-50%,-50%) rotateY(0deg);
+}
+#carousel img{
+  position:absolute;width:160px;height:200px;object-fit:cover;border-radius:15px;
+  border:2px solid rgba(255,255,255,.3);
+  box-shadow:0 0 20px rgba(255,255,255,.2);
+  cursor:pointer;transition:transform .6s ease;
+}
+#carousel img:hover{transform:scale(1.2) translateZ(40px);z-index:99;}
+
+/* Modal */
+.modal{
+  position:fixed;inset:0;background:rgba(0,0,0,.85);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:1000;opacity:0;pointer-events:none;transition:opacity .5s ease;
+}
+.modal.show{opacity:1;pointer-events:auto;}
+.modal video{
+  width:0;max-width:400px;border-radius:20px;
+  box-shadow:0 0 40px #ff69b4;animation:bloom 1s forwards ease;
+}
+@keyframes bloom{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1;width:70%}}
+.modal p{
+  margin-top:1rem;font-size:1.5rem;text-align:center;text-shadow:0 0 20px #ff69b4;
+  animation:fadeIn 1s 0.8s forwards;opacity:0;
+}
+@keyframes fadeIn{to{opacity:1}}
+
+#playMusic{
+  position:fixed;bottom:20px;left:20px;padding:10px 20px;
+  border:none;border-radius:25px;
+  background:rgba(0,0,0,.6);color:#fff;cursor:pointer;display:none;z-index:2000;
+}
+
+@media(max-width:600px){
+  #carousel img{width:110px;height:150px}
+  .carousel-bg{width:350px;height:350px}
+}
+</style>
 </head>
-
 <body>
-    <div id="drag-container">
-        <div id="spin-container">
-            <img src="./images/r1.png" alt="">
-            <img src="./images/r2.png" alt="">
-            <img src="./images/r3.png" alt="">
-            <img src="./images/r4.png" alt="">
-            <img src="./images/r5.jpg" alt="">
-            <img src="./images/r6.png" alt="">
-            <img src="./images/r7.png" alt="">
-            <img src="./images/r8.png" alt="">
-            <img src="./images/r9.png" alt="">
-            <img src="./images/r10.png" alt="">
-            <p style="">Happy<span style=""> Birthday</span> Reyansh</p>
-            <button class="button" onclick="confetti()"></button>
-        </div>
-        <div id="ground"></div>
-    </div>
 
-    <div id="music-container"></div>
-    <!-- <div id="canva">
-        <canvas id="canvas"></canvas>
-    </div> -->
+<!-- <div class="starry-bg"></div> -->
+<!-- <div class="aurora"></div> -->
 
-    <!-- Audio tự động phát -->
-    <!-- <audio id="myAudio" autoplay playsinline>
-        <source src="music/setlove.mp3" type="audio/mpeg">
-        <source src="music/setlove.ogg" type="audio/ogg">
-    </audio> -->
-      <script src='https://cdn.jsdelivr.net/npm/canvas-confetti@1/dist/confetti.browser.min.js'></script>
-    <script src="main.js"></script>
+<section id="welcome">
+  <h1>🎁 Tap to open your surprise, Reyansh!</h1>
+  <button id="openBtn">Tap to Open 🎉</button>
+</section>
 
-    <script>
-        window.onload = function () {
-            var audio = document.getElementById("myAudio");
-            audio.muted = false;
-            audio.play().catch(function (e) {
-                console.log('Audio playback failed:', e);
-            });
+<div class="scene" id="scene">
+  <div class="carousel-bg"></div>
+  <div id="carousel"></div>
+</div>
 
-            // Hiệu ứng pháo hoa và trái tim
-            const canvas = document.getElementById("canvas");
-            const ctx = canvas.getContext("2d");
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+<div id="modal" class="modal">
+  <video id="modalVideo" controls></video>
+  <p id="modalText"></p>
+</div>
 
-            function random(min, max) {
-                return Math.random() * (max - min) + min;
-            }
+<button id="playMusic">🎵 Play Music</button>
 
-            function Firework(x, y) {
-                this.x = x;
-                this.y = y;
-                this.radius = random(2, 4);
-                this.color = `hsl(${random(0, 360)}, 100%, 50%)`;
-                this.vx = random(-3, 3);
-                this.vy = random(-3, 3);
-                this.life = 100;
-            }
+<audio id="bgm" loop preload="auto">
+  <source src="https://cdn.pixabay.com/download/audio/2023/02/23/audio_6dfccfc72b.mp3?filename=soft-lullaby-14076.mp3" type="audio/mpeg">
+</audio>
 
-            Firework.prototype.draw = function () {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.fill();
-            };
+<audio id="jingle" preload="auto">
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_34ab376c32.mp3?filename=kids-party-ta-da-11307.mp3" type="audio/mpeg">
+</audio>
 
-            Firework.prototype.update = function () {
-                this.x += this.vx;
-                this.y += this.vy;
-                this.life--;
-            };
+<script>
+const stickers = ['🧸','🐻','🐶','🐱','🐘','🦒','🐰','🦜','🐧','🦄','🚂','✈️','🚗','🪁','🎈','⭐','☁️','🍭','🌙','🦋','🐢','🐝','🐬','🌸','🍎',
+'🧸','🐻','🐶','🐱','🐘','🦒','🐰','🦜','🐧','🦄','🚂','✈️','🚗','🪁','🎈','⭐','☁️','🍭','🌙','🦋','🐢','🐝','🐬','🌸','🍎'
+];
+function random(min,max){return Math.random()*(max-min)+min;}
+function createSticker(){
+  const s=document.createElement('div');
+  s.className='sticker';
+  s.textContent=stickers[Math.floor(Math.random()*stickers.length)];
+  s.style.left=`${random(5,95)}%`;
+  s.style.top=`${random(5,95)}%`;
+  s.style.animationDuration=`${random(5,9)}s`;
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),9000);
+}
+setInterval(createSticker,1000);
 
-            function Heart(x, y) {
-                this.x = x;
-                this.y = y;
-                this.size = random(20, 40);
-                this.color = 'red';
-                this.vy = random(-2, -1);
-                this.opacity = 1;
-            }
+/* carousel setup */
+const images=['./images/r1.png','./images/r2.png','./images/r3.png','./images/r4.png','./images/r5.jpg','./images/r6.png','./images/r7.png','./images/r8.png','./images/r9.png','./images/r10.png'];
+const videos=[
+  "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+  "https://www.w3schools.com/html/mov_bbb.mp4",
+  "https://samplelib.com/lib/preview/mp4/sample-5s.mp4",
+  "https://samplelib.com/lib/preview/mp4/sample-10s.mp4",
+  "https://samplelib.com/lib/preview/mp4/sample-15s.mp4",
+  "https://file-examples.com/wp-content/uploads/2017/04/file_example_MP4_480_1_5MG.mp4",
+  "https://file-examples.com/wp-content/uploads/2018/04/file_example_MP4_640_3MG.mp4",
+  "https://samplelib.com/lib/preview/mp4/sample-20s.mp4",
+  "https://interactive-examples.mdn.mozilla.net/media/examples/flower.mp4",
+  "https://www.w3schools.com/html/mov_bbb.mp4"
+];
+const quotes=[
+  "You are our sunshine ☀️","Every smile of yours is magic 💫","Our little hero is growing fast 💙",
+  "You make our world brighter 🌈","Giggles, dreams, and endless love ✨","Always be our tiny star 🌟",
+  "Happiness is spelled R-E-Y-A-N-S-H 💖","Keep shining, baby boy 🌞","Sweet moments, lifetime memories 💕",
+  "Our love for you is infinite 💞"
+];
 
-            Heart.prototype.draw = function () {
-                ctx.beginPath();
-                ctx.moveTo(this.x, this.y);
-                ctx.bezierCurveTo(this.x - this.size / 2, this.y - this.size / 2, this.x - this.size, this.y + this.size / 3, this.x, this.y + this.size);
-                ctx.bezierCurveTo(this.x + this.size, this.y + this.size / 3, this.x + this.size / 2, this.y - this.size / 2, this.x, this.y);
-                ctx.fillStyle = this.color;
-                ctx.globalAlpha = this.opacity;
-                ctx.fill();
-                ctx.globalAlpha = 1;
-            };
+const carousel=document.getElementById('carousel');
+const modal=document.getElementById('modal');
+const modalVideo=document.getElementById('modalVideo');
+const modalText=document.getElementById('modalText');
+const openBtn=document.getElementById('openBtn');
+const welcome=document.getElementById('welcome');
+const bgm=document.getElementById('bgm');
+const jingle=document.getElementById('jingle');
+const playMusic=document.getElementById('playMusic');
 
-            Heart.prototype.update = function () {
-                this.y += this.vy;
-                this.opacity -= 0.01;
-            };
+/* carousel rotation */
+const radius=400,degStep=360/images.length;
+images.forEach((src,i)=>{
+  const img=document.createElement('img');
+  img.src=src;
+  img.style.transform=`rotateY(${i*degStep}deg) translateZ(${radius}px)`;
+  img.addEventListener('click',()=>showModal(i));
+  carousel.appendChild(img);
+});
+let rotationY=0,rotating=true;
+function animate(){
+  if(rotating) rotationY+=0.2;
+  carousel.style.transform=`translate(-50%,-50%) rotateY(${rotationY}deg)`;
+  requestAnimationFrame(animate);
+}
+animate();
 
-            let fireworks = [];
-            let hearts = [];
+/* modal */
+function showModal(i){
+  rotating=false;
+  fadeAudio(bgm,0.2,800);
+  jingle.currentTime=0;jingle.play();
+  modalVideo.src=videos[i];
+  modalText.textContent=quotes[i];
+  modal.classList.add('show');
+  modalVideo.play();
+  confetti({particleCount:200,spread:180,origin:{y:0.7}});
+  modalVideo.onended=closeModal;
+}
+function closeModal(){
+  modal.classList.remove('show');
+  modalVideo.pause();modalVideo.src="";
+  fadeAudio(bgm,1,800);
+  rotating=true;
+}
+modal.addEventListener('click',closeModal);
 
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                if (Math.random() < 0.1) {
-                    fireworks.push(new Firework(random(0, canvas.width), random(0, canvas.height)));
-                }
-                if (Math.random() < 0.05) {
-                    hearts.push(new Heart(random(0, canvas.width), canvas.height));
-                }
+/* audio fade */
+function fadeAudio(audio,target,duration){
+  const start=audio.volume,delta=target-start,steps=20,stepTime=duration/steps;
+  let i=0;
+  const fade=setInterval(()=>{
+    i++;audio.volume=start+(delta*i/steps);
+    if(i>=steps) clearInterval(fade);
+  },stepTime);
+}
 
-                fireworks.forEach((firework, index) => {
-                    firework.draw();
-                    firework.update();
-                    if (firework.life <= 0) {
-                        fireworks.splice(index, 1);
-                    }
-                });
-
-                hearts.forEach((heart, index) => {
-                    heart.draw();
-                    heart.update();
-                    if (heart.opacity <= 0) {
-                        hearts.splice(index, 1);
-                    }
-                });
-
-                requestAnimationFrame(animate);
-            }
-            animate();
-        };
-    </script>
+/* welcome */
+openBtn.addEventListener('click',()=>{
+  confetti({particleCount:300,spread:150,origin:{y:0.6}});
+  bgm.play().catch(()=>playMusic.style.display='block');
+  welcome.style.opacity=0;
+  setTimeout(()=>welcome.style.display='none',1500);
+  document.getElementById('scene').classList.add('active');
+});
+playMusic.addEventListener('click',()=>{
+  bgm.play();playMusic.style.display='none';
+});
+</script>
 </body>
-
 </html>
